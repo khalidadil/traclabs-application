@@ -5,8 +5,8 @@
 
 To run this project:
 1. Make sure you have Meteor and Node installed on your computer.
-- Meteor: https://www.meteor.com/install
-- Node: https://nodejs.org/en/download
+* Meteor: https://www.meteor.com/install
+* Node: https://nodejs.org/en/download
 2. Either clone the repo by using the `git clone` command in the Terminal app or download the repo and unzip it.
 3. Using the 'Terminal' app on a Mac, navigate to the directory that the project is in.
 4. Run `npm install`.
