@@ -1,11 +1,11 @@
 import React from 'react';
 
 export default React.createClass({
-  displayName: 'Not Found',
+  displayName: 'ChemicalComp',
 
   render() {
     return (
-      <p>This page doesn't exist!</p>
+     <div></div>
     );
   },
 });

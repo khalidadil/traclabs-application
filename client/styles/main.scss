@@ -1,0 +1,35 @@
+body {
+  margin: 0px;
+}
+
+.header {
+  background: #7AECE2; /* For browsers that do not support gradients */
+  background: -webkit-linear-gradient(left, #7AECE2, #BDF67F); /* For Safari 5.1 to 6.0 */
+  background: -o-linear-gradient(right, #7AECE2, #BDF67F); /* For Opera 11.1 to 12.0 */
+  background: -moz-linear-gradient(right, #7AECE2, #BDF67F); /* For Firefox 3.6 to 15 */
+  background: linear-gradient(to right, #7AECE2, #BDF67F); /* Standard syntax */
+  color: white;
+  height: 79px;
+  box-shadow: 1px bottom;
+  position: relative;
+  .leftContainer {
+    position: absolute;
+    top: 27px;
+    left: 38px;
+  }
+  .logo {
+    height: 31px;
+  }
+}
+
+h1.title {
+  font-size: '33px';
+  font-family: 'Roboto Slab';
+  text-align: center;
+  font-weight: 300;
+  margin-top: 63px;
+}
+
+p {
+  margin: 0px;
+}

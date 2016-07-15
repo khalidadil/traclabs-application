@@ -1,5 +1,5 @@
 {
-  "name": "dashboard",
+  "name": "trac-app",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -10,9 +10,10 @@
   "author": "khalidadil",
   "license": "ISC",
   "dependencies": {
-    "react": "^0.14.7",
-    "react-dom": "^0.14.7",
-    "react-layout": "^1.1.0",
-    "react-router": "^2.0.1"
+    "history": "^3.0.0",
+    "react": "^15.2.1",
+    "react-addons-pure-render-mixin": "^15.2.1",
+    "react-dom": "^15.2.1",
+    "react-router": "^2.5.2"
   }
 }

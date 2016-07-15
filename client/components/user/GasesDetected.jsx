@@ -1,11 +1,11 @@
 import React from 'react';
 
 export default React.createClass({
-  displayName: 'Not Found',
+  displayName: 'GasesDetected',
 
   render() {
     return (
-      <p>This page doesn't exist!</p>
+     <div></div>
     );
   },
 });
