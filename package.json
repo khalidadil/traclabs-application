@@ -10,10 +10,12 @@
   "author": "khalidadil",
   "license": "ISC",
   "dependencies": {
+    "highcharts": "^4.2.5",
     "history": "^3.0.0",
     "react": "^15.2.1",
     "react-addons-pure-render-mixin": "^15.2.1",
     "react-dom": "^15.2.1",
+    "react-highcharts": "^9.0.0",
     "react-router": "^2.5.2"
   }
 }

@@ -38,6 +38,7 @@ ejson@1.0.8-beta.16
 erasaur:meteor-lodash@4.0.0
 es5-shim@4.3.2-beta.16
 fastclick@1.0.8-beta.16
+fortawesome:fontawesome@4.4.0_1
 fourseven:scss@3.4.1
 geojson-utils@1.0.5-beta.16
 hot-code-push@1.0.1-beta.16
@@ -90,6 +91,7 @@ standard-minifier-js@1.0.3-beta.16
 stevezhu:lodash@4.6.1
 templating@1.1.6-beta.16
 templating-tools@1.0.1-beta.16
+themeteorchef:bert@2.1.0
 tracker@1.0.10-beta.16
 ui@1.0.8-beta.16
 underscore@1.0.5-beta.16

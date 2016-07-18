@@ -23,13 +23,236 @@ body {
 }
 
 h1.title {
-  font-size: '33px';
+  font-size: 60px;
   font-family: 'Roboto Slab';
   text-align: center;
   font-weight: 300;
   margin-top: 63px;
+  margin-bottom: 50px;
+}
+
+h2 {
+  font-size: 33px;
+  font-family: 'Roboto Slab';
+  font-weight: 300;
+  padding-bottom: 14px;
+  margin-bottom: 35px;
+  border-bottom: 1px solid #C5C9CB;
+  display: inline-block;
+}
+
+body {
+  margin: 0px;
+  font-size: 25px;
+  font-family: 'Inconsolata';
 }
 
 p {
   margin: 0px;
+}
+
+.robotControls, .robotStats {
+  text-align: center;
+}
+
+.arrowBlock {
+  background: #F9F9F9;
+  border: 1px solid #979797;
+  width: 80%;
+  height: 380px;
+  margin: 0 auto;
+  position: relative;
+  .upArrow {
+    position: absolute;
+    top: 35px;
+    left: 163px;
+    width: 115px;
+    height: 74px;
+    background-image: url('/assets/images/upArrow.png');
+    &:active {
+      opacity: 0.5;
+      filter: alpha(opacity=50);
+    }
+  }
+  .upRightArrow {
+    position: absolute;
+    top: 101px;
+    left: 252px;
+    width: 74px;
+    height: 75px;
+    background-image: url('/assets/images/upRightArrow.png');
+    background-repeat: no-repeat;
+    z-index: 1;
+    &:active {
+      opacity: 0.5;
+      filter: alpha(opacity=50);
+    }
+  }
+  .rightArrow {
+    position: absolute;
+    top: 134px;
+    left: 320px;
+    width: 74px;
+    height: 115px;
+    background-image: url('/assets/images/rightArrow.png');
+    &:active {
+      opacity: 0.5;
+      filter: alpha(opacity=50);
+    }
+  }
+  .downRightArrow {
+    position: absolute;
+    top: 218px;
+    left: 253px;
+    width: 74px;
+    height: 75px;
+    background-image: url('/assets/images/downRightArrow.png');
+    background-repeat: no-repeat;
+    z-index: 1;
+    &:active {
+      opacity: 0.5;
+      filter: alpha(opacity=50);
+    }
+  }
+  .downArrow {
+    position: absolute;
+    top: 278px;
+    left: 163px;
+    width: 115px;
+    height: 75px;
+    background-image: url('/assets/images/downArrow.png');
+    &:active {
+      opacity: 0.5;
+      filter: alpha(opacity=50);
+    }
+  }
+  .downLeftArrow {
+    position: absolute;
+    top: 218px;
+    left: 120px;
+    width: 74px;
+    height: 75px;
+    background-image: url('/assets/images/downLeftArrow.png');
+    background-repeat: no-repeat;
+    z-index: 1;
+    &:active {
+      opacity: 0.5;
+      filter: alpha(opacity=50);
+    }
+  }
+  .leftArrow {
+    position: absolute;
+    top: 134px;
+    left: 54px;
+    width: 74px;
+    height: 115px;
+    background-image: url('/assets/images/leftArrow.png');
+    &:active {
+      opacity: 0.5;
+      filter: alpha(opacity=50);
+    }
+  }
+  .upLeftArrow {
+    position: absolute;
+    top: 100px;
+    left: 120px;
+    width: 74px;
+    height: 75px;
+    background-image: url('/assets/images/upLeftArrow.png');
+    background-repeat: no-repeat;
+    z-index: 1;
+    &:active {
+      opacity: 0.5;
+      filter: alpha(opacity=50);
+    }
+  }
+}
+
+.liveFeed {
+  display: inline-block;
+  width: 80%;
+  height: 380px;
+  margin: 0 auto;
+}
+
+.batteryHealth {
+  .batteryPercent {
+    display: inline-block;
+    padding-right: 10px;
+    font-size: 33px;
+    &.green {
+      color: #8DEF77;
+    }
+    &.orange {
+      color: #F7A35C;
+    }
+    &.red {
+      color: #E22121;
+    }
+  }
+  p {
+    display: inline-block;
+  }
+}
+
+.gasesDetected {
+  margin-top: 20px;
+  margin-bottom: 30px;
+  ul {
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
+    li {
+      padding-top: 10px;
+      color: #7A8994;
+    }
+  }
+  .gasPPM, .gasName {
+    display: inline-block;
+  }
+  .gasPPM {
+    font-size: 33px;
+    padding-right: 12px;
+  }
+}
+
+.substrateChart {
+  height: 380px;
+  width: 100%;
+}
+
+.robotStats {
+  .leftSide, .rightSide {
+    width: 80%;
+    margin: 0 auto;
+  }
+}
+
+@media (min-width: 600px) {
+  .robotControls, .robotStats {
+    text-align: left;
+    max-width: 1024px;
+    margin: 0 auto;
+  }
+  .arrowBlock {
+    display: inline-block;
+    width: 440px;
+  }
+  .liveFeed {
+    display: inline-block;
+    width: 540px;
+  }
+  .robotControls {
+    & > div {
+      display: inline-block;
+      padding-right: 20px;
+    }
+  }
+  .robotStats {
+    .leftSide, .rightSide {
+      display: inline-block;
+      width: 50%;
+      vertical-align: top;
+    }
+  }
 }
