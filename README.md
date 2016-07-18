@@ -1,7 +1,11 @@
 # Tracklabs Application
 ### Goal: to be able to create a simple Meteor app using React, React Router, Meteor, and HighCharts to demonstrate mastery.
 
+#### Mockup:
 ![Tracklabs Mockup](/public/assets/images/traclabs_mock@1x.png?raw=true "Tracklabs Mockup")
+
+#### Final Product:
+![Tracklabs Final](/public/assets/images/FinalProduct.gif?raw=true "Tracklabs Final")
 
 To run this project:
 
