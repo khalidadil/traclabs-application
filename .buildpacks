@@ -1,0 +1,176 @@
+#!/usr/bin/env bash
+# Heroku Buildpack for Meteor 1.3-beta.16
+# Usage: heroku buildpacks:set https://github.com/your-username/heroku-buildpack-meteor-1.3-beta
+
+set -e
+
+BUILD_DIR=$1
+CACHE_DIR=$2
+ENV_DIR=$3
+BP_DIR=$(cd $(dirname $0); cd ..; pwd)
+
+# Load environment variables
+if [ -d "$ENV_DIR" ]; then
+  for e in $(ls $ENV_DIR/); do
+    echo "$e" | grep -E '^[A-Z_][A-Z0-9_]*$' &&
+    export "$e=$(cat $ENV_DIR/$e)"
+    :
+  done
+fi
+
+# Configuration
+METEOR_VERSION="1.3-beta.16"
+NODE_VERSION="0.10.43"  # Node version compatible with Meteor 1.3-beta.16
+NPM_VERSION="2.15.1"    # NPM version compatible with Node 0.10.x
+
+echo "-----> Heroku Meteor 1.3-beta.16 Buildpack"
+echo "       Meteor version: $METEOR_VERSION"
+echo "       Node version: $NODE_VERSION"
+
+# Create necessary directories
+mkdir -p $BUILD_DIR/.heroku
+mkdir -p $CACHE_DIR/meteor
+mkdir -p $CACHE_DIR/node
+
+# Install Node.js
+NODE_URL="https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.gz"
+NODE_DIR="$CACHE_DIR/node/v$NODE_VERSION"
+
+if [ ! -d "$NODE_DIR" ]; then
+  echo "-----> Installing Node.js $NODE_VERSION"
+  mkdir -p "$NODE_DIR"
+  curl -s "$NODE_URL" | tar xzf - -C "$NODE_DIR" --strip-components=1
+fi
+
+# Add Node to PATH
+export PATH="$NODE_DIR/bin:$PATH"
+
+# Update npm to compatible version
+echo "-----> Updating npm to $NPM_VERSION"
+npm install -g npm@$NPM_VERSION
+
+# Install Meteor
+METEOR_DIR="$CACHE_DIR/meteor/$METEOR_VERSION"
+METEOR_TARBALL_URL="https://warehouse.meteor.com/bootstrap/$METEOR_VERSION"
+
+if [ ! -d "$METEOR_DIR" ]; then
+  echo "-----> Installing Meteor $METEOR_VERSION"
+  mkdir -p "$METEOR_DIR"
+  curl -s "$METEOR_TARBALL_URL" | tar xzf - -C "$METEOR_DIR" --strip-components=1
+fi
+
+# Add Meteor to PATH
+export PATH="$METEOR_DIR/bin:$PATH"
+
+# Change to build directory
+cd $BUILD_DIR
+
+# Check for .meteor directory
+if [ ! -d ".meteor" ]; then
+  echo "-----> ERROR: No .meteor directory found"
+  echo "       This buildpack is for Meteor applications only"
+  exit 1
+fi
+
+# Install npm dependencies if package.json exists
+if [ -f "package.json" ]; then
+  echo "-----> Installing npm dependencies"
+  npm install --production
+fi
+
+# Set up environment for Meteor 1.3 beta
+export METEOR_ALLOW_SUPERUSER=1
+export METEOR_DISABLE_OPTIMISTIC_CACHING=1
+
+# Build the Meteor application
+echo "-----> Building Meteor application"
+meteor build ../build --directory --server-only --allow-superuser
+
+# Move built application to correct location
+mv ../build/bundle/* $BUILD_DIR/
+rm -rf ../build
+
+# Install production dependencies for the built app
+echo "-----> Installing built app dependencies"
+cd $BUILD_DIR/programs/server
+npm install --production
+
+# Return to build directory
+cd $BUILD_DIR
+
+# Create startup script
+cat > $BUILD_DIR/start.sh << 'EOF'
+#!/bin/bash
+export PORT=${PORT:-3000}
+export ROOT_URL=${ROOT_URL:-http://localhost:$PORT}
+export MONGO_URL=${MONGO_URL:-mongodb://localhost:27017/meteor}
+export METEOR_SETTINGS=${METEOR_SETTINGS:-'{}'}
+
+# Start the application
+exec node main.js
+EOF
+
+chmod +x $BUILD_DIR/start.sh
+
+# Create Procfile if it doesn't exist
+if [ ! -f "$BUILD_DIR/Procfile" ]; then
+  echo "web: ./start.sh" > $BUILD_DIR/Procfile
+fi
+
+# Create .profile.d script for runtime environment
+mkdir -p $BUILD_DIR/.profile.d
+cat > $BUILD_DIR/.profile.d/meteor.sh << 'EOF'
+export PATH="/app/.heroku/node/bin:/app/.heroku/meteor/bin:$PATH"
+export ROOT_URL=${ROOT_URL:-https://$HEROKU_APP_NAME.herokuapp.com}
+export MONGO_URL=${MONGO_URL}
+export METEOR_SETTINGS=${METEOR_SETTINGS:-'{}'}
+EOF
+
+# Copy Node and Meteor to .heroku directory for runtime
+echo "-----> Copying runtime binaries"
+cp -r "$NODE_DIR" "$BUILD_DIR/.heroku/node"
+cp -r "$METEOR_DIR" "$BUILD_DIR/.heroku/meteor"
+
+# Create package.json for Heroku if it doesn't exist
+if [ ! -f "$BUILD_DIR/package.json" ]; then
+  cat > $BUILD_DIR/package.json << 'EOF'
+{
+  "name": "meteor-app",
+  "version": "1.0.0",
+  "description": "Meteor 1.3-beta.16 application",
+  "main": "main.js",
+  "scripts": {
+    "start": "./start.sh"
+  },
+  "engines": {
+    "node": "0.10.43",
+    "npm": "2.15.1"
+  }
+}
+EOF
+fi
+
+echo "-----> Build completed successfully"
+echo "       Application ready for deployment"
+
+# Display important information
+cat << 'EOF'
+
+=====> IMPORTANT DEPLOYMENT NOTES:
+
+1. Make sure to set the following environment variables:
+   heroku config:set ROOT_URL=https://your-app.herokuapp.com
+   heroku config:set MONGO_URL=mongodb://your-mongo-connection-string
+
+2. For MongoDB, consider using:
+   - MongoDB Atlas (recommended)
+   - mLab (now part of MongoDB Atlas)
+   - Or add the MongoLab addon: heroku addons:create mongolab
+
+3. If you're using Meteor accounts or other packages requiring MAIL_URL:
+   heroku config:set MAIL_URL=smtp://your-email-service
+
+4. For production settings:
+   heroku config:set METEOR_SETTINGS='{"your":"settings"}'
+
+EOF
